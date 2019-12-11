@@ -12,86 +12,76 @@ app.use(express.static('public'));
 const mongoose = require('mongoose');
 
 // connect to the database
-mongoose.connect('mongodb://localhost:27017/museum', {
+mongoose.connect('mongodb://localhost:27017/arena', {
   useNewUrlParser: true
 });
 
-// Create a scheme for items in the museum: a title and a path to an image.
-const itemSchema = new mongoose.Schema({
-  title: String,
-  path: String,
-  caption: String,
+// Create a scheme for fighters in the arena: a name and a path to an image.
+const fighterSchema = new mongoose.Schema({
+  name: String,
+  colortext: String,
+  armor: Number,
+  attack: Number,
+  speed: Number,
+  creator: String,
+  points: Number
 });
 
-// Create a model for items in the museum.
-const Item = mongoose.model('Item', itemSchema);
+// Create a model for fighters in the arena.
+const Fighter = mongoose.model('Fighter', fighterSchema);
 
-// Configure multer so that it will upload to '/public/images'
-const multer = require('multer')
-const upload = multer({
-  dest: './public/images/',
-  limits: {
-    fileSize: 10000000
-  }
-});
-
-// Upload a photo. Uses the multer middleware for the upload and then returns
-// the path where the photo is stored in the file system.
-app.post('/api/photos', upload.single('photo'), async (req, res) => {
-  // Just a safety check
-  if (!req.file) {
-    return res.sendStatus(400);
-  }
-  res.send({
-    path: "/images/" + req.file.filename
-  });
-});
-
-// Get a list of all of the items in the museum.
-app.get('/api/items', async (req, res) => {
+// Get a list of all of the fighters in the arena.
+app.get('/api/fighters', async (req, res) => {
   try {
-    let items = await Item.find();
-    res.send(items);
+    let fighters = await Fighter.find();
+    res.send(fighters);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 });
 
-// Create a new item in the museum: takes a title and a path to an image.
-app.post('/api/items', async (req, res) => {
-  const item = new Item({
-    title: req.body.title,
-    path: req.body.path,
-    caption: req.body.caption,
+// Create a new fighter in the arena: takes a name and a path to an image.
+app.post('/api/fighters', async (req, res) => {
+  const fighter = new Fighter({
+    name: req.body.name,
+    colortext: req.body.colortext,
+    armor: req.body.armor,
+    attack: req.body.attack,
+    speed: req.body.speed,
+    creator: req.body.creator
   });
   try {
-    await item.save();
-    res.send(item);
+    await fighter.save();
+    res.send(fighter);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 });
 
-app.put('/api/items/:id', async (req, res) => {
+app.put('/api/fighters/:id', async (req, res) => {
   try {
-    let item = await Item.findOne({
+    let fighter = await Fighter.findOne({
       _id: req.params.id
     });
-    item.title = req.body.title;
-    item.caption = req.body.caption;
-    await item.save();
-    res.send(item);
+    fighter.name = req.body.name;
+    fighter.colortext = req.body.colortext;
+    fighter.armor = req.body.armor;
+    fighter.attack = req.body.attack;
+    fighter.speed = req.body.speed;
+    fighter.creator = req.body.creator;
+    await fighter.save();
+    res.send(fighter);
   } catch(error) {
   console.log(error);
   res.sendStatus(500);
   }
 });
 
-app.delete('/api/items/:id', async (req, res) => {
+app.delete('/api/fighters/:id', async (req, res) => {
   try {
-    await Item.deleteOne({
+    await Fighter.deleteOne({
       _id: req.params.id
     });
     res.sendStatus(200);
@@ -101,4 +91,4 @@ app.delete('/api/items/:id', async (req, res) => {
   }
 })
 
-app.listen(4205, () => console.log('Server listening on port 4205!'));
+app.listen(4210, () => console.log('Server listening on port 4210!'));
