@@ -9,7 +9,7 @@ var app = new Vue({
     attack: 0,
     speed: 0,
     armor: 0,
-    health: 40,
+    health: 0,
     creator: "",
     name: "",
     deleteCheck: false,
@@ -30,12 +30,14 @@ var app = new Vue({
         console.log(error);
       }
     },
-    async checkName(creatorCheck) {
-      if (creatorCheck === this.creatorMaster) {
+    async checkName() {
+      if (this.creatorCheck === this.creatorMaster) {
         this.deleteCheck = true;
+        this.creatorCheck = "";
         return;
       }
       else {
+          this.creatorCheck = "";
         return;
       }
     },
@@ -45,7 +47,7 @@ var app = new Vue({
           let r2 = await axios.post('/api/fighters', {
             name: this.name,
             armor: this.armor,
-            health: this.health,
+            health: "40",
             attack: this.attack,
             speed: this.speed,
             creator: this.creator
@@ -65,20 +67,11 @@ var app = new Vue({
         let response = axios.delete("/api/fighters/" + findFighter._id);
         this.findFighter = null;
         this.getFighters();
-        this.deleteCheck = false;
+        this.creatorCheck = "";
         return true;
       } catch (error) {
         console.log(error);
       }
-    },
-    compCreator() {
-        if (this.creatorCheck === this.creatorMaster) {
-            this.deleteCheck = true;
-            return;
-        }
-        else {
-            return;
-        }
     }
   }
 });
