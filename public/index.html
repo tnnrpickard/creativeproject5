@@ -9,44 +9,51 @@
 
 <body>
   <div id="app">
-    <h1>Welcome to BattleBusters!</h1>
+    <div class="module top">
+      <h1 style="text-align: center;">Welcome to BattleBusters!</h1>
+      <h2>Leaderboard!</h2>
+      <ol>
+        <li v-for="leader in leaderboard">{{ leader.name }} sponsored by {{ leader.creator }} has {{ leader.points }}!</li>
+      </ol>
+    </div>
     <div class="flex">
       <div>
         <h2>Choose your hero!</h2>
-        <select>
-          <option value="brutus">Brutus</option>
-          <option value="teslor">Teslor</option>
-          <option value="jethro">Jethro</option>
-          <option value="hedge">Hedge</option>
-          <option value="custom">Custom</option>
+        <select id="hero">
+          <option v-for="fighter in fighters">{{fighter.name}}</option>
         </select> 
       </div>
       <div>
         <h2>Choose your opponent!</h2>
-        <select>
-          <option value="brutus">Brutus</option>
-          <option value="teslor">Teslor</option>
-          <option value="jethro">Jethro</option>
-          <option value="hedge">Hedge</option>
+        <select id="villian">
+          <option v-for="fighter in fighters">{{fighter.name}}</option>
         </select> 
       </div>
     </div>
-    <div>
+    <div class="module">
       <h2>Add a fighter!</h2>
         <div class="add">
           <div class="form">
             <input v-model="name" placeholder="Fighter's Name">
             <p></p>
-            <input v-model="colortext" placeholder="Description">
+            <input v-model="creator" placeholder="Your Name">
+            <p></p>
             <h3>Fighting Statistics</h3>
-            <input v-model="armor" placeholder="Defense Rating (1-20)">
+            <p>The sum of all statistics must not exceed 22, otherwise your fighter's health will decrease! (It starts at 40).</p>
             <input v-model="attack" placeholder="Offense Rating (1-20)">
+            <p>This statistic determines the fighters' strength.</p>
+            <input v-model="armor" placeholder="Defense Rating (1-20)">
+            <p>This statistic determines how resilient your fighter is.</p>
             <input v-model="speed" placeholder="Dexterity Rating (1-20)">
-            <input v-model="creator" placeholder="Your Name (for the Leaderboard)">
+            <p>This statistic determines which fighter attacks first.</p>
             <button @click="upload">Upload</button>
           </div>
-          <div class="upload" v-if="addItem">
-            <h2>{{addItem.title}}</h2>
+          <div class="upload" v-if="addFighter">
+            <h2>{{addFighter.name}} has become a gladiator!</h2>
+            <p>Offense: {{addFighter.attack}}</p>
+            <p>Defense: {{addFighter.armor}}</p>
+            <p>Speed: {{addFighter.speed}}</p>
+            <p>Health: {{addFighter.health}}</p>
         </div>
       </div>
     </div>

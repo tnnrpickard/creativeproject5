@@ -16,9 +16,8 @@ a {
 .flex {
   display: flex;
   justify-content: space-around;
-  min-height: 100%;
 }
 
-h1 {
+.module { 
   text-align: center;
 }

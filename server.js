@@ -19,8 +19,8 @@ mongoose.connect('mongodb://localhost:27017/arena', {
 // Create a scheme for fighters in the arena: a name and a path to an image.
 const fighterSchema = new mongoose.Schema({
   name: String,
-  colortext: String,
   armor: Number,
+  health: Number,
   attack: Number,
   speed: Number,
   creator: String,
@@ -43,20 +43,39 @@ app.get('/api/fighters', async (req, res) => {
 
 // Create a new fighter in the arena: takes a name and a path to an image.
 app.post('/api/fighters', async (req, res) => {
-  const fighter = new Fighter({
-    name: req.body.name,
-    colortext: req.body.colortext,
-    armor: req.body.armor,
-    attack: req.body.attack,
-    speed: req.body.speed,
-    creator: req.body.creator
-  });
-  try {
-    await fighter.save();
-    res.send(fighter);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
+  if (req.body.attack + req.body.speed + req.body.armor <= 22) {
+    const fighter = new Fighter({
+      name: req.body.name,
+      armor: req.body.armor,
+      health: 40,
+      attack: req.body.attack,
+      speed: req.body.speed,
+      creator: req.body.creator
+    });
+    try {
+      await fighter.save();
+      res.send(fighter);
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(500);
+    }
+  }
+  else {
+    const fighter = new Fighter({
+      name: req.body.name,
+      armor: req.body.armor,
+      health: 40 - (req.body.attack + req.body.speed + req.body.armor - 22),
+      attack: req.body.attack,
+      speed: req.body.speed,
+      creator: req.body.creator
+    });
+    try {
+      await fighter.save();
+      res.send(fighter);
+    } catch (error) {
+      console.log(error);
+      res.sendStatus(500);
+    }
   }
 });
 
@@ -66,7 +85,6 @@ app.put('/api/fighters/:id', async (req, res) => {
       _id: req.params.id
     });
     fighter.name = req.body.name;
-    fighter.colortext = req.body.colortext;
     fighter.armor = req.body.armor;
     fighter.attack = req.body.attack;
     fighter.speed = req.body.speed;
