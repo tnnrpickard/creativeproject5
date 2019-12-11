@@ -1,67 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8" />
-  <title>BattleBusters!</title>
-  <link rel="stylesheet" href="stylesheets/style.css"/>
-</head>
+  <head>
+      <meta charset="utf-8" />
+      <title>BattleBusters!</title>
+      <link rel="stylesheet" href="stylesheets/style.css" />
+  </head>
 
-<body>
-  <div id="app">
-    <div class="module top">
-      <h1 style="text-align: center;">Welcome to BattleBusters!</h1>
-      <h2>Leaderboard!</h2>
-      <ol>
-        <li v-for="leader in leaderboard">{{ leader.name }} sponsored by {{ leader.creator }} has {{ leader.points }}!</li>
-      </ol>
-    </div>
-    <div class="flex">
-      <div>
-        <h2>Choose your hero!</h2>
-        <select id="hero">
-          <option v-for="fighter in fighters">{{fighter.name}}</option>
-        </select> 
+  <body>
+    <div id="app">
+      <div class="module">
+        <h1 style="text-align: center;">Welcome to BattleBusters!</h1>
+          <h2>Leaderboard!</h2>
+            <ol>
+              <li v-for="leader in leaderboard">{{ leader.name }} has {{ leader.points }}!</li>
+            </ol>
       </div>
-      <div>
-        <h2>Choose your opponent!</h2>
-        <select id="villian">
-          <option v-for="fighter in fighters">{{fighter.name}}</option>
-        </select> 
+      <div class="flex">
+        <div>
+          <h2>Choose your hero!</h2>
+          <select id="hero">
+            <option v-for="fighter in fighters">{{fighter.name}}</option>
+          </select>
+          <div v-if="findFighter">
+            <h2>{{findFighter.name}} is ready to fight!</h2>
+            <p>Offense: {{findFighter.attack}}</p>
+            <p>Defense: {{findFighter.armor}}</p>
+            <p>Speed: {{findFighter.speed}}</p>
+            <p>Health: {{findFighter.health}}</p>
+          </div>
+        </div>
+        <div>
+          <h2>Choose your opponent!</h2>
+            <select id="villian">
+              <option v-for="fighter in fighters">{{fighter.name}}</option>
+            </select>
+        </div>
       </div>
-    </div>
-    <div class="module">
-      <h2>Add a fighter!</h2>
-        <div class="add">
+      <div class="module">
+        <button>Start Fight!</button>
+        <div style="min-height: 100%">Get Ready to Rumble!</div>
+      </div>
+
+      <div class="flex">
+        <div class="module">
           <div class="form">
+            <h2>Add a fighter!</h2>
             <input v-model="name" placeholder="Fighter's Name">
             <p></p>
             <input v-model="creator" placeholder="Your Name">
             <p></p>
             <h3>Fighting Statistics</h3>
-            <p>The sum of all statistics must not exceed 22, otherwise your fighter's health will decrease! (It starts at 40).</p>
+            <p>The sum of all statistics must not exceed 22!</p>
             <input v-model="attack" placeholder="Offense Rating (1-20)">
             <p>This statistic determines the fighters' strength.</p>
             <input v-model="armor" placeholder="Defense Rating (1-20)">
             <p>This statistic determines how resilient your fighter is.</p>
             <input v-model="speed" placeholder="Dexterity Rating (1-20)">
             <p>This statistic determines which fighter attacks first.</p>
-            <button @click="upload">Upload</button>
+            <button @click="addFighter">Upload</button>
           </div>
-          <div class="upload" v-if="addFighter">
-            <h2>{{addFighter.name}} has become a gladiator!</h2>
-            <p>Offense: {{addFighter.attack}}</p>
-            <p>Defense: {{addFighter.armor}}</p>
-            <p>Speed: {{addFighter.speed}}</p>
-            <p>Health: {{addFighter.health}}</p>
+          <div class="upload" v-if="addition">
+            <h2>{{findFighter.name}} has entered the arena!</h2>
+            <p>Offense: {{findFighter.attack}}</p>
+            <p>Defense: {{findFighter.armor}}</p>
+            <p>Speed: {{findFighter.speed}}</p>
+            <p>Health: {{findFighter.health}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="module">
+      <h2>Delete a Fighter(?)</h2>
+          <div class="edit">
+            <div class="form">
+              <select>
+                <option v-for="s in fighters" @click="selectFighter(s)">{{s.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div v-if="findFighter">
+            <input v-model="findFighter.name">
+              <p>Insert the creator's name to verify!</p>
+              <input v-model="creatorCheck">
+          </div>
+          <div class="actions" v-if="deleteCheck">
+            <button @click="deleteFighter(findFighter)">Delete</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="javascripts/script.js"></script>
-</body>
-
+      <script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src="javascripts/script.js"></script>
+    </body>
 </html>

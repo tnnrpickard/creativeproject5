@@ -9,10 +9,12 @@ router.get('/', function(req, res, next) {
 router.get('/getfight',async function(req,res,next) {
     var hero = req.query.hero;
     var villian = req.query.villian;
-    var heroRandom = (Math.random() + .75);
-    var villianRandom = (Math.random() + .75);
-    var intervalInfo = {note1:note1, note2:note2, interval:interval};
-    res.status(200).json(intervalInfo);
+    var heroRand = (Math.random() + .8);
+    var villianRand = (Math.random() + .8);
+    var villiandmg = hero.attack*heroRand - villian.armor*villianRand;
+    var herodmg = villian.attack*villianRand - hero.armor*heroRand;
+    var fightInfo = {villiandmg:villiandmg, herodmg:herodmg};
+    res.status(200).json(fightInfo);
 });
 
 module.exports = router;
