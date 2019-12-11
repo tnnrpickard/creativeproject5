@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+      <meta charset="utf-8" />
+      <title>BattleBusters!</title>
+      <link rel="stylesheet" href="stylesheets/style.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <h1 style="text-align: center;">Welcome to BattleBusters Administration!</h1>
+        <div class="module flex">
+          <div class="form">
+            <h2>Add a fighter!</h2>
+            <input v-model="name" placeholder="Fighter's Name">
+            <p></p>
+            <input v-model="creator" placeholder="Your Name">
+            <p></p>
+            <h3>Fighting Statistics</h3>
+            <p>The sum of all statistics must not exceed 22!</p>
+            <input v-model="attack" placeholder="Offense Rating (1-20)">
+            <p>This statistic determines the fighters' strength.</p>
+            <input v-model="armor" placeholder="Defense Rating (1-20)">
+            <p>This statistic determines how resilient your fighter is.</p>
+            <input v-model="speed" placeholder="Dexterity Rating (1-20)">
+            <p>This statistic determines which fighter attacks first.</p>
+            <button @click="addFighter">Upload</button>
+          </div>
+          <div v-if="addition">
+            <h2>{{findFighter.name}} has entered the arena!</h2>
+            <p>Offense: {{findFighter.attack}}</p>
+            <p>Defense: {{findFighter.armor}}</p>
+            <p>Speed: {{findFighter.speed}}</p>
+            <p>Health: {{findFighter.health}}</p>
+          </div>
+          <div>
+            <h2>Edit/Delete a Fighter</h2>
+            <div class="form">
+                <select  v-if="fighters.length > 0">
+                    <option v-for="s in fighters" @click="selectFighter(s)">{{s.name}}</option>
+                </select>
+            </div>
+          <div class="upload" v-if="findFighter">
+            <p v-text="findFighter.name"></p>
+            <p></p>
+            <p>Type the name of the character's creator to confirm removal!</p>
+            <input v-model="creatorCheck">
+            <button @click=""
+          </div>
+          <div class="actions" v-if="deleteCheck">
+            <button @click="deleteFighter(findFighter)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src="javascripts/admin.js"></script>
+    </body>
+</html>
