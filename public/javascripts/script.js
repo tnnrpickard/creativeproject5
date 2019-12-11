@@ -9,6 +9,7 @@ var app = new Vue({
     attack: 0,
     speed: 0,
     armor: 0,
+    health: 40,
     creator: "",
     name: "",
     leaderboard: [],
@@ -44,16 +45,16 @@ var app = new Vue({
     async addFighter() {
       try {
         this.addition = true;
-        const formData = new FormData();
           let r2 = await axios.post('/api/fighters', {
             name: this.name,
             armor: this.armor,
-            health: 40,
+            health: this.health,
             attack: this.attack,
             speed: this.speed,
             creator: this.creator
           });
           this.addFighter = r2.data;
+          this.findFighter = this.addFighter;
       } catch (error) {
         console.log(error);
       }

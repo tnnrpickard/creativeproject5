@@ -22,7 +22,7 @@
           <select id="hero">
             <option v-for="fighter in fighters">{{fighter.name}}</option>
           </select>
-          <div v-if="findFighter">
+          <div v-if="chosenHero">
             <h2>{{findFighter.name}} is ready to fight!</h2>
             <p>Offense: {{findFighter.attack}}</p>
             <p>Defense: {{findFighter.armor}}</p>
@@ -35,15 +35,21 @@
             <select id="villian">
               <option v-for="fighter in fighters">{{fighter.name}}</option>
             </select>
+          <div v-if="chosenVillian">
+            <h2>{{findFighter.name}} is ready to fight!</h2>
+            <p>Offense: {{findFighter.attack}}</p>
+            <p>Defense: {{findFighter.armor}}</p>
+            <p>Speed: {{findFighter.speed}}</p>
+            <p>Health: {{findFighter.health}}</p>
+          </div>
         </div>
       </div>
       <div class="module">
         <button>Start Fight!</button>
-        <div style="min-height: 100%">Get Ready to Rumble!</div>
+        <div>Get Ready to Rumble!</div>
       </div>
 
-      <div class="flex">
-        <div class="module">
+        <div class="module flex">
           <div class="form">
             <h2>Add a fighter!</h2>
             <input v-model="name" placeholder="Fighter's Name">
@@ -60,7 +66,7 @@
             <p>This statistic determines which fighter attacks first.</p>
             <button @click="addFighter">Upload</button>
           </div>
-          <div class="upload" v-if="addition">
+          <div v-if="addition">
             <h2>{{findFighter.name}} has entered the arena!</h2>
             <p>Offense: {{findFighter.attack}}</p>
             <p>Defense: {{findFighter.armor}}</p>
@@ -68,17 +74,14 @@
             <p>Health: {{findFighter.health}}</p>
           </div>
         </div>
-      </div>
     </div>
     <div class="module">
       <h2>Delete a Fighter(?)</h2>
-          <div class="edit">
-            <div class="form">
+            <div>
               <select>
-                <option v-for="s in fighters" @click="selectFighter(s)">{{s.name}}</option>
+                <option v-for="fighter in fighters" @click="selectFighter(fighter)">{{fighter.name}}</option>
               </select>
             </div>
-          </div>
           <div v-if="findFighter">
             <input v-model="findFighter.name">
               <p>Insert the creator's name to verify!</p>
