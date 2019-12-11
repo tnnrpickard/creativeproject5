@@ -3,6 +3,8 @@ html, body {
   font: 14px Helvetica, Arial, sans-serif;
   height: 100%;
   width: auto;
+  background-image: url("./Slide1.JPG");
+  background-size: cover;
 }
 
 #app {
@@ -20,4 +22,8 @@ a {
 
 .module { 
   text-align: center;
+}
+
+.miniaturize {
+  max-height: 200px;
 }

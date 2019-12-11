@@ -9,7 +9,11 @@
 
   <body>
     <div id="app">
-      <h1 style="text-align: center;">Welcome to BattleBusters Administration!</h1>
+        <div class="module">
+            <h1>Welcome to BattleBusters Administration!</h1>
+            <a href="cs260.tannerpickard.com:4210/">Battle Page</a>
+        </div>
+
         <div class="module flex">
           <div class="form">
             <h2>Add a fighter!</h2>
@@ -28,7 +32,9 @@
             <h4>Speed:</h4>
             <input v-model="speed" placeholder="Dexterity Rating (1-20)">
             <p>This statistic determines which fighter attacks first.</p>
-            <button @click="addFighter">Upload</button>
+
+            <br>
+            <button @click="addFighter">Add</button>
           </div>
           <div v-if="addition">
             <h2>{{findFighter.name}} has entered the arena!</h2>
@@ -36,9 +42,10 @@
             <p>Defense: {{findFighter.armor}}</p>
             <p>Speed: {{findFighter.speed}}</p>
             <p>Health: {{findFighter.health}}</p>
+            <img class="miniaturize" :src="findHero.path" />
           </div>
           <div>
-            <h2>Edit/Delete a Fighter</h2>
+            <h2>Delete a Fighter</h2>
             <div class="form">
                 <select  v-if="fighters.length > 0">
                     <option v-for="s in fighters" @click="selectFighter(s)">{{s.name}}</option>

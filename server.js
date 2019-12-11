@@ -24,7 +24,26 @@ const fighterSchema = new mongoose.Schema({
   attack: Number,
   speed: Number,
   creator: String,
-  points: Number
+  points: Number,
+  path: String
+});
+
+const multer = require('multer')
+const upload = multer({
+  dest: './public/images/',
+  limits: {
+    fileSize: 10000000
+  }
+});
+
+app.post('/api/photos', upload.single('photo'), async (req, res) => {
+  // Just a safety check
+  if (!req.file) {
+    return res.sendStatus(400);
+  }
+  res.send({
+    path: "/images/" + req.file.filename
+  });
 });
 
 // Create a model for fighters in the arena.
@@ -41,12 +60,12 @@ app.get('/api/fighters', async (req, res) => {
   }
 });
 
-// Create a new fighter in the arena: takes a name and a path to an image.
+// Create a new fighter in the arena: takes a name
 app.post('/api/fighters', async (req, res) => {
-  if (req.body.attack + req.body.speed + req.body.armor <= 22) {
     const fighter = new Fighter({
       name: req.body.name,
       armor: req.body.armor,
+      path: req.body.path,
       health: 40,
       attack: req.body.attack,
       speed: req.body.speed,
@@ -59,24 +78,6 @@ app.post('/api/fighters', async (req, res) => {
       console.log(error);
       res.sendStatus(500);
     }
-  }
-  else {
-    const fighter = new Fighter({
-      name: req.body.name,
-      armor: req.body.armor,
-      health: 40 - (req.body.attack + req.body.speed + req.body.armor - 22),
-      attack: req.body.attack,
-      speed: req.body.speed,
-      creator: req.body.creator
-    });
-    try {
-      await fighter.save();
-      res.send(fighter);
-    } catch (error) {
-      console.log(error);
-      res.sendStatus(500);
-    }
-  }
 });
 
 app.put('/api/fighters/:id', async (req, res) => {
@@ -88,7 +89,9 @@ app.put('/api/fighters/:id', async (req, res) => {
     fighter.armor = req.body.armor;
     fighter.attack = req.body.attack;
     fighter.speed = req.body.speed;
+    fighter.health = 40;
     fighter.creator = req.body.creator;
+    fighter.path = req.body.path;
     await fighter.save();
     res.send(fighter);
   } catch(error) {

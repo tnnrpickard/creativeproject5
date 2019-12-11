@@ -11,44 +11,47 @@
     <div id="app">
       <div class="module">
         <h1 style="text-align: center;">Welcome to BattleBusters!</h1>
+        <a href="cs260.tannerpickard.com:4210/admin.html">Admin Page</a>
         <div v-if="leaderboard.length > 0">
           <h2>Leaderboard!</h2>
             <ol>
               <li v-for="leader in leaderboard">{{ leader.name }} has {{ leader.points }}!</li>
             </ol>
-          </div>
+        </div>
       </div>
       <div class="flex">
         <div>
           <h2>Choose your hero!</h2>
           <select id="hero">
-            <option v-for="fighter in fighters">{{fighter.name}}</option>
+            <option v-for="fighter in fighters" @click="selectHero(fighter)">{{fighter.name}}</option>
           </select>
-          <div v-if="chosenHero">
-            <h2>{{findFighter.name}} is ready to fight!</h2>
-            <p>Offense: {{findFighter.attack}}</p>
-            <p>Defense: {{findFighter.armor}}</p>
-            <p>Speed: {{findFighter.speed}}</p>
-            <p>Health: {{findFighter.health}}</p>
+          <div v-if="findHero">
+            <h2>{{findHero.name}} is ready to fight!</h2>
+            <p>Offense: {{findHero.attack}}</p>
+            <p>Defense: {{findHero.armor}}</p>
+            <p>Speed: {{findHero.speed}}</p>
+            <p>Health: {{findHero.health}}</p>
+            <img class="miniaturize" :src="findHero.path" />
           </div>
         </div>
         <div>
           <h2>Choose your opponent!</h2>
             <select id="villian">
-              <option v-for="fighter in fighters">{{fighter.name}}</option>
+              <option v-for="fighter in fighters" @click="selectVillian(fighter)">{{fighter.name}}</option>
             </select>
-          <div v-if="chosenVillian">
-            <h2>{{findFighter.name}} is ready to fight!</h2>
-            <p>Offense: {{findFighter.attack}}</p>
-            <p>Defense: {{findFighter.armor}}</p>
-            <p>Speed: {{findFighter.speed}}</p>
-            <p>Health: {{findFighter.health}}</p>
+          <div v-if="findVillian">
+            <h2>{{findVillian.name}} is ready to fight!</h2>
+            <p>Offense: {{findVillian.attack}}</p>
+            <p>Defense: {{findVillian.armor}}</p>
+            <p>Speed: {{findVillian.speed}}</p>
+            <p>Health: {{findVillian.health}}</p>
+            <img class="miniaturize" :src="findVillian.path" />
           </div>
         </div>
       </div>
       <div class="module">
-        <button>Start Fight!</button>
-        <div>Get Ready to Rumble!</div>
+        <button disabled>Start Fight!</button>
+        <div>Fighting is not yet enabled, sorry!</div>
       </div>
     </div>
     

@@ -1,5 +1,4 @@
 /*global Vue*/
-/*global fetch*/
 /*global axios*/
 var app = new Vue({
   el: '#app',
@@ -10,15 +9,18 @@ var app = new Vue({
     speed: 0,
     armor: 0,
     health: 0,
+    points: 0,
+    path: "",
     creator: "",
     name: "",
+    file: null,
     deleteCheck: false,
     creatorMaster: "",
     creatorCheck: "",
     addition: false
   },
   created() {
-    this.getFighters()
+    this.getFighters();
   },
   methods: {
     async getFighters() {
@@ -29,6 +31,9 @@ var app = new Vue({
       } catch (error) {
         console.log(error);
       }
+    },
+    fileChanged(event) {
+      this.file = event.target.files[0];
     },
     async checkName() {
       if (this.creatorCheck === this.creatorMaster) {
@@ -43,11 +48,15 @@ var app = new Vue({
     },
     async addFighter() {
       try {
+        const formData = new FormData();
+        formData.append('photo', this.file, this.file.name);
         this.addition = true;
+          let r1 = await axios.post('/api/images', formData);
           let r2 = await axios.post('/api/fighters', {
             name: this.name,
             armor: this.armor,
-            health: "40",
+            health: 40,
+            path: r1.data.path,
             attack: this.attack,
             speed: this.speed,
             creator: this.creator
@@ -65,9 +74,10 @@ var app = new Vue({
     async deleteFighter(findFighter) {
       try {
         let response = axios.delete("/api/fighters/" + findFighter._id);
+        this.deleteCheck = false;
         this.findFighter = null;
-        this.getFighters();
         this.creatorCheck = "";
+        this.getFighters();
         return true;
       } catch (error) {
         console.log(error);

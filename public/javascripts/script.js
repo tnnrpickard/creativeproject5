@@ -5,19 +5,26 @@ var app = new Vue({
   el: '#app',
   data: {
     fighters: [],
-    findFighter: "",
-    attack: 0,
-    speed: 0,
-    armor: 0,
-    health: 40,
-    creator: "",
-    name: "",
-    leaderboard: [],
-    hero: "",
-    villian: "",
+    findHero: null,
+    findVillian: null,
+    heroAttack: 0,
+    heroSpeed: 0,
+    heroArmor: 0,
+    heroHealth: 40,
+    heroPath: "",
+    heroCreator: "",
+    heroName: "",
+    villianAttack: 0,
+    villianSpeed: 0,
+    villianArmor: 0,
+    villianHealth: 40,
+    villianCreator: "",
+    villianPath: "",
+    villianName: "",
+    leaderboard: []
   },
   created() {
-    this.getFighters()
+    this.getFighters();
   },
   methods: {
     async getFighters() {
@@ -29,5 +36,11 @@ var app = new Vue({
         console.log(error);
       }
     },
+    async selectHero(fighter) {
+      this.findHero = fighter;
+    },
+    async selectVillian(fighter) {
+      this.findVillian = fighter;
+    }
   }
 });
